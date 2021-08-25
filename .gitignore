@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.idea
+hidden.py
+sources/11-0.txt
+sources/2591-0.txt
+sources/pg14091.txt
+sources/pg18866.txt
