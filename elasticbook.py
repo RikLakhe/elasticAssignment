@@ -63,19 +63,14 @@ class ElasticBook:
 
                 para = ''
                 continue
-            para = para + " "+line
-
+            para = para + " " + line
 
     def get_filename(self):
         return self.filename
 
     def check_elasticsearch_connection(self):
-        try:
-            self.es.ping()
-            return True
-        except Exception as e:
-            print(e)
-            return False
+        self.es.ping()
+        return True
 
     def check_bookfile_opened(self):
         if self.fhand is not None:
@@ -97,7 +92,7 @@ class ElasticBook:
             self.fhand = fhand
         except FileNotFoundError as e:
             print("Error:", e)
-            self.start_bookfile_process()
+            raise
 
     def __clean_index(self):
         res = self.es.indices.delete(index=self.indexname, ignore=[400, 404])
@@ -116,6 +111,7 @@ class ElasticBook:
     def search(self, param):
         body = json.dumps({"query": {"query_string": {"query": param}}})
         return self.es.search(index=self.indexname, body=body)
+
 
 if __name__ == '__main__':
     elasticbook = ElasticBook()

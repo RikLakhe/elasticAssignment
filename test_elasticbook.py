@@ -25,7 +25,16 @@ class ElasticBookTest(TestCase):
     def test_check_elasticsearch(self):
         self.assertTrue(self.elasticbook.check_elasticsearch_connection())
 
-    @mock.patch('builtins.input', return_value='')
+    @mock.patch('builtins.input', return_value='test.txt')
+    def test_check_bookfile_not_opened(self, input):
+        self.assertFalse(self.elasticbook.check_bookfile_opened())
+
+    @mock.patch('builtins.input', return_value='test2.txt')
+    def test_check_bookfile_not_found(self, input):
+        with self.assertRaises(FileNotFoundError):
+            self.elasticbook.start_bookfile_process()
+
+    @mock.patch('builtins.input', return_value='test.txt')
     def test_check_bookfile_opened(self,input):
         self.elasticbook.start_bookfile_process()
         self.assertTrue(self.elasticbook.check_bookfile_opened())
